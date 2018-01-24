@@ -1,0 +1,29 @@
+const Discord = require("discord.js");
+const config = require("./config.json")
+const client = new Discord.Client();
+
+client.on("ready", () => {
+  console.log("juke-bot online!");
+});
+
+client.on("message", (message) => {
+  if (!message.content.startsWith(config.prefix) || message.author.bot) {
+    return;
+  }
+
+  if(message.content.startsWith(config.prefix + "prefix")) {
+    // Gets the prefix from the command (eg. "-prefix +" it will take the "+" from it)
+    let newPrefix = message.content.split(" ").slice(1, 2)[0];
+    // change the configuration in memory
+    config.prefix = newPrefix;
+    // Now we have to save the file.
+    fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
+  }
+
+  // Music Commands
+  if (message.content.startsWith(config.prefix + "play")) {
+    message.channel.send("playing music");
+  }
+});
+
+client.login(config.token);
