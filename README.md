@@ -1,6 +1,7 @@
 # juke-bot
 ## Personal Discord Music Bot (and other functionalities)
 
+### Usage
 Requires: config file (json) schema:
 ```JavaScript
 {
@@ -9,6 +10,18 @@ Requires: config file (json) schema:
   "clientID",
   "username"
 }
+```
+
+On command line to activate bot:
+```Bash
+node [nameoffile.js]
+# in this case the name of file will be juke-bot.js
+
+We will have the following:
+$ node juke-bot.js
+juke-bot online!
+
+To turn off, just abord (Ctrl+C)
 ```
 
 Commands: TODO
