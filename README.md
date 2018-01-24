@@ -15,13 +15,16 @@ Requires: config file (json) schema:
 On command line to activate bot:
 ```Bash
 node [nameoffile.js]
+
 # in this case the name of file will be juke-bot.js
+```
 
 We will have the following:
+```Bash
 $ node juke-bot.js
 juke-bot online!
 
-To turn off, just abord (Ctrl+C)
+# To turn off, simply abort (Ctrl+C)
 ```
 
 Commands: TODO
