@@ -2,11 +2,17 @@ const Discord = require("discord.js");
 const config = require("./config.json")
 const client = new Discord.Client();
 
+// Todo
+let curr = null;
+
 client.on("ready", () => {
   console.log("juke-bot online!");
 });
 
 client.on("message", (message) => {
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+
   if (!message.content.startsWith(config.prefix) || message.author.bot) {
     return;
   }
@@ -21,8 +27,28 @@ client.on("message", (message) => {
   }
 
   // Music Commands
-  if (message.content.startsWith(config.prefix + "play")) {
-    message.channel.send("playing music");
+  // if (message.content.startsWith(config.prefix + "play")) {
+  //   message.channel.send("playing music");
+  // }
+  switch (command) {
+    // Music Commands
+    case "play":
+      let [url] = args;
+      message.channel.send(`Playing music: <${url}>`);
+      break;
+    case "echo":
+      let [tx] = args;
+      message.channel.send(`${tx}`);
+      break;
+    case "pause":
+      message.channel.send("Paused");
+      break;
+    case "unpause":
+      message.channel.send("Unpaused");
+      break;
+    case "git":
+      message.channel.send(`https://github.com/labartist/juke-bot`);
+      break;
   }
 });
 
