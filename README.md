@@ -9,6 +9,7 @@ Requires: config file (json) schema:
   "prefix",
   "clientID",
   "username"
+  "APIKey"
 }
 ```
 
