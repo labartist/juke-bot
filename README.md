@@ -27,17 +27,11 @@ juke-bot online!
 
 # To turn off, simply abort (Ctrl+C)
 ```
-
-Commands: TODO
+Commands:
 ```Java
--play     plays music
- Usage: give space after command
- [url]  e.g. youtube link url/music or playlist
- [name] e.g. name of music (search functionality)
-
--pause    pauses current music played
--unpause  unpauses current music played
--list     lists current queue of music
--queue    adds to queue
--clear    clears queue
+-join  : "Joins current user voice channel"
+-leave : "Leaves current user voice channel"
+-play  : "Plays music if already joined to voice channel"
+-echo  : "Echoes user input"
+-git   : "Links git repository"
 ```
