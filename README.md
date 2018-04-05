@@ -29,9 +29,10 @@ juke-bot online!
 ```
 Commands:
 ```Java
--join  : "Joins current user voice channel"
--leave : "Leaves current user voice channel"
--play  : "Plays music if already joined to voice channel"
--echo  : "Echoes user input"
--git   : "Links git repository"
+join    "Joins current user voice channel"
+leave   "Leaves current user voice channel"
+play    "Plays music if already joined to voice channel"
+echo    "Echoes user input"
+git     "Links git repository"
+prefix  "Changes prefix"
 ```

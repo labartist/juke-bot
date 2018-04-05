@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const config = require("./config.json")
 const client = new Discord.Client();
+var fs = require('fs');
 
 let queue = {};
 
@@ -17,20 +18,34 @@ const commands = {
 		});
 	},
 	'help': (message) => {
-    let tosend = ['```JS', 
-      '// Juke-Bot Commands',
-      config.prefix + 'join  : "Joins current user voice channel"',	
-      config.prefix + 'leave : "Leaves current user voice channel"',	
-      config.prefix + 'play  : "Plays music if already joined to voice channel"', 
-      config.prefix + 'echo  : "Best command ever"',
-      config.prefix + 'git   : "Links git repository"',	
+    let tosend = ['Commands:','```JS', 
+      config.prefix + 'join    "Joins current user voice channel"',	
+      config.prefix + 'leave   "Leaves current user voice channel"',	
+      config.prefix + 'play    "Plays music if already joined to voice channel"', 
+      config.prefix + 'echo    "Echoes user input"',
+      config.prefix + 'git     "Links git repository"',	
+      config.prefix + 'prefix  "Changes prefix"',
     '```'];
-		message.channel.sendMessage(tosend.join('\n'));
+		message.channel.send(tosend.join('\n'));
 	},
 	'leave': (message) => {
     message.member.voiceChannel.leave();
     message.reply('Left Channel: ' + '**' + message.member.voiceChannel +'**');
-	}
+  },
+  'echo': (message) => {
+    message.channel.send(message.content.slice(config.prefix.length + 4).trim());
+	},
+  'git': (message) => {
+    message.channel.send(`https://github.com/labartist/juke-bot`);
+  },
+  'prefix': (message) => {
+    // Gets the prefix from the command (eg. "-prefix +" it will take the "+" from it)
+    let newPrefix = message.content.split(" ").slice(1, 2)[0];
+    // change and save changes to config in memory
+    config.prefix = newPrefix;
+    message.channel.send('Prefix changed to ' + '`' + newPrefix + '`');
+    fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
+  }
 }
 
 client.on("ready", () => {
@@ -44,27 +59,13 @@ client.on("message", (message) => {
   if (!message.content.startsWith(config.prefix) || message.author.bot) {
     return;
   }
-  if (commands.hasOwnProperty(message.content.toLowerCase().slice(config.prefix.length).split(' ')[0])) commands[message.content.toLowerCase().slice(config.prefix.length).split(' ')[0]](message);
-
-  if(message.content.startsWith(config.prefix + "prefix")) {
-    // Gets the prefix from the command (eg. "-prefix +" it will take the "+" from it)
-    let newPrefix = message.content.split(" ").slice(1, 2)[0];
-    // change the configuration in memory
-    config.prefix = newPrefix;
-    // Now we have to save the file.
-    fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
+  if (commands.hasOwnProperty(message.content.toLowerCase().slice(config.prefix.length).split(' ')[0])) {
+    commands[message.content.toLowerCase().slice(config.prefix.length).split(' ')[0]](message);
   }
 
-  // Misc Commands (using switch)
-  switch (command) {
-    case "echo":
-      let tx = args;
-      message.channel.send(tx);
-      break;
-    case "git":
-      message.channel.send(`https://github.com/labartist/juke-bot`);
-      break;
-  }
+  // Commands (using switch)
+  // switch (command) {
+  // }
 });
 
 client.login(config.token);
