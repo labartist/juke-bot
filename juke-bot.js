@@ -7,24 +7,25 @@ let queue = {};
 
 const commands = {
 	'join': (message) => {
-    //message.reply('VIN I GOT THE GODDAMN JOIN MESSAGE BUT I HAVENT JOINED YET');
 		return new Promise((resolve, reject) => {
       const voiceChannel = message.member.voiceChannel;
 			if (!voiceChannel || voiceChannel.type !== 'voice') {
-        return message.reply('FOOL! I CAN ONLY JOIN A VOICE CHANNEL!');
+        return message.reply('Unable to join, please join a voice channel');
       }
       message.reply('Joined Channel: ' + '**' + message.member.voiceChannel + '**');
 			voiceChannel.join().then(connection => resolve(connection)).catch(err => reject(err));
 		});
 	},
 	'help': (message) => {
-    let tosend = ['Commands:','```JS', 
+    let tosend = ['**__All Commands__**',
+	'```JS', 
       config.prefix + 'join    "Joins current user voice channel"',	
       config.prefix + 'leave   "Leaves current user voice channel"',	
       config.prefix + 'play    "Plays music if already joined to voice channel"', 
       config.prefix + 'echo    "Echoes user input"',
+      config.prefix + 'ping    "Returns user latency to voice channel"',
       config.prefix + 'git     "Links git repository"',	
-      config.prefix + 'prefix  "Changes prefix"',
+      config.prefix + 'prefix  "Changes command prefix"',
     '```'];
 		message.channel.send(tosend.join('\n'));
 	},
@@ -33,15 +34,22 @@ const commands = {
     message.reply('Left Channel: ' + '**' + message.member.voiceChannel +'**');
   },
   'echo': (message) => {
-    message.channel.send(message.content.slice(config.prefix.length + 4).trim());
+    message.author.sendMessage(message.content.slice(config.prefix.length + 4).trim());
+  },
+  'ping': async (message) => {
+    const m = await message.channel.send('Checking ping...');
+    const ping = m.createdTimestamp - message.createdTimestamp;
+    if (ping > 200) {
+      m.edit(`Your ping is **${ping}ms**. What a laggy cunt.`);
+    } else {
+      m.edit(`Your ping is **${ping}ms**.`);
+    }
 	},
   'git': (message) => {
     message.channel.send(`https://github.com/labartist/juke-bot`);
   },
   'prefix': (message) => {
-    // Gets the prefix from the command (eg. "-prefix +" it will take the "+" from it)
     let newPrefix = message.content.split(" ").slice(1, 2)[0];
-    // change and save changes to config in memory
     config.prefix = newPrefix;
     message.channel.send('Prefix changed to ' + '`' + newPrefix + '`');
     fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
@@ -56,9 +64,15 @@ client.on("message", (message) => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
+  // For @juke-bot
+  if (message.isMentioned(client.user.id)) {
+    message.reply('my current prefix is `' + config.prefix + '`.\n Use `' + config.prefix + 'help` for more information.');
+  }
+  // Prefix and botception filter
   if (!message.content.startsWith(config.prefix) || message.author.bot) {
     return;
   }
+  // Commands filter
   if (commands.hasOwnProperty(message.content.toLowerCase().slice(config.prefix.length).split(' ')[0])) {
     commands[message.content.toLowerCase().slice(config.prefix.length).split(' ')[0]](message);
   }

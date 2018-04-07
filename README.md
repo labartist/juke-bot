@@ -28,11 +28,12 @@ juke-bot online!
 # To turn off, simply abort (Ctrl+C)
 ```
 Commands:
-```Java
+```JS
 join    "Joins current user voice channel"
 leave   "Leaves current user voice channel"
 play    "Plays music if already joined to voice channel"
 echo    "Echoes user input"
+ping    "Returns user latency to voice channel"
 git     "Links git repository"
-prefix  "Changes prefix"
+prefix  "Changes command prefix"
 ```
