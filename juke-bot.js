@@ -1,24 +1,41 @@
 const Discord = require("discord.js");
-const config = require("./config.json")
+const config = require("./config.json");
 const client = new Discord.Client();
+var opus = require('opusscript');
+var yt = require('ytdl-core');
 var fs = require('fs');
+
+const streamOptions = { seek: 0, volume: 1 };
 
 let queue = {};
 
 const commands = {
-	'join': (message) => {
+  'play': (message) => {
+    let url = message.content.split(' ')[1];
+		yt.getInfo(url, function(err, info) {
+      if (err) throw err;
+			message.member.voiceChannel.join()
+      .then(connection => {
+        const stream = yt(url, { filter : 'audioonly' });
+        const dispatcher = connection.playStream(stream, streamOptions);
+      })
+      .catch(console.error);
+      message.channel.send(`Playing: **${info.title}**`);
+    });
+	},
+  'join': (message) => {
 		return new Promise((resolve, reject) => {
       const voiceChannel = message.member.voiceChannel;
 			if (!voiceChannel || voiceChannel.type !== 'voice') {
-        return message.reply('Unable to join, please join a voice channel');
+        return message.channel.send('Unable to join, please join a voice channel');
       }
-      message.reply('Joined Channel: ' + '**' + message.member.voiceChannel + '**');
+      message.channel.send('Joined Channel: ' + '**' + message.member.voiceChannel + '**');
 			voiceChannel.join().then(connection => resolve(connection)).catch(err => reject(err));
 		});
 	},
-	'help': (message) => {
+  'help': (message) => {
     let tosend = ['**__All Commands__**',
-	'```JS', 
+	  '```JS', 
       config.prefix + 'join    "Joins current user voice channel"',	
       config.prefix + 'leave   "Leaves current user voice channel"',	
       config.prefix + 'play    "Plays music if already joined to voice channel"', 
@@ -29,12 +46,12 @@ const commands = {
     '```'];
 		message.channel.send(tosend.join('\n'));
 	},
-	'leave': (message) => {
+  'leave': (message) => {
     message.member.voiceChannel.leave();
-    message.reply('Left Channel: ' + '**' + message.member.voiceChannel +'**');
+    message.channel.send('Left Channel: ' + '**' + message.member.voiceChannel +'**');
   },
   'echo': (message) => {
-    message.author.sendMessage(message.content.slice(config.prefix.length + 4).trim());
+    message.reply(message.content.slice(config.prefix.length + 4).trim());
   },
   'ping': async (message) => {
     const m = await message.channel.send('Checking ping...');
