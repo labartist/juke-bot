@@ -10,6 +10,7 @@ Requires: config file (json) schema:
   "clientID",
   "username"
   "APIKey"
+  "Mpath"
 }
 ```
 
@@ -29,11 +30,12 @@ juke-bot online!
 ```
 Commands:
 ```JS
-join    "Joins current user voice channel"
-leave   "Leaves current user voice channel"
-play    "Plays music if already joined to voice channel"
-echo    "Echoes user input"
-ping    "Returns user latency to voice channel"
-git     "Links git repository"
-prefix  "Changes command prefix"
+join      "Joins current user voice channel"
+leave     "Leaves current user voice channel"
+play      "Plays music url and joins voice channel if haven't"
+playlocal "Plays local file and joins voice channel if haven't"
+echo      "Echoes user input"
+ping      "Returns user latency to voice channel"
+git       "Links git repository"
+prefix    "Changes command prefix"
 ```

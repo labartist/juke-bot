@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const config = require("./config.json");
 const client = new Discord.Client();
+
 var opus = require('opusscript');
 var yt = require('ytdl-core');
 var fs = require('fs');
@@ -12,17 +13,37 @@ let queue = {};
 const commands = {
   'play': (message) => {
     let url = message.content.split(' ')[1];
-		yt.getInfo(url, function(err, info) {
-      if (err) throw err;
-			message.member.voiceChannel.join()
-      .then(connection => {
+    yt.getInfo(url, function(err, info) {
+      if (err) {
+        return message.channel.send('Invalid input: Insert youtube URL');
+      };
+			message.member.voiceChannel.join().then(connection => {
         const stream = yt(url, { filter : 'audioonly' });
         const dispatcher = connection.playStream(stream, streamOptions);
-      })
-      .catch(console.error);
+      }).catch(console.error);
       message.channel.send(`Playing: **${info.title}**`);
     });
-	},
+    // while (queue.length != 0) {
+    //   var next = queue.shift();
+    //   message.channel.seek(`Playing: **${next.title}**`)
+    // }
+  },
+  'playlocal': (message) => {
+    //let name = message.content.split(' ')[1];
+		message.member.voiceChannel.join().then(connection => {
+      //const dispatcher = connection.play(config.Mpath); // doesnt work
+      connection.playFile(config.Mpath);
+    }).catch(console.error);
+    message.channel.send("Playing File: **" + config.Mpath.replace(/^.*[\\\/]/, '') + "**");
+  },
+  // 'stop': (message) => {
+  // },
+  // 'pause': (message) => {
+  // },
+  // 'unpause': (message) => {
+  // },
+  // 'add': (message) => {
+	// },
   'join': (message) => {
 		return new Promise((resolve, reject) => {
       const voiceChannel = message.member.voiceChannel;
@@ -35,13 +56,13 @@ const commands = {
 	},
   'help': (message) => {
     let tosend = ['**__All Commands__**',
-	  '```JS', 
-      config.prefix + 'join    "Joins current user voice channel"',	
-      config.prefix + 'leave   "Leaves current user voice channel"',	
-      config.prefix + 'play    "Plays music if already joined to voice channel"', 
+	  '```JS',
+      config.prefix + 'join    "Joins current user voice channel"',
+      config.prefix + 'leave   "Leaves current user voice channel"',
+      config.prefix + 'play    "Plays music if already joined to voice channel"',
       config.prefix + 'echo    "Echoes user input"',
       config.prefix + 'ping    "Returns user latency to voice channel"',
-      config.prefix + 'git     "Links git repository"',	
+      config.prefix + 'git     "Links git repository"',
       config.prefix + 'prefix  "Changes command prefix"',
     '```'];
 		message.channel.send(tosend.join('\n'));
@@ -56,11 +77,7 @@ const commands = {
   'ping': async (message) => {
     const m = await message.channel.send('Checking ping...');
     const ping = m.createdTimestamp - message.createdTimestamp;
-    if (ping > 200) {
-      m.edit(`Your ping is **${ping}ms**. What a laggy cunt.`);
-    } else {
-      m.edit(`Your ping is **${ping}ms**.`);
-    }
+    m.edit(`Your ping is **${ping}ms**.`);
 	},
   'git': (message) => {
     message.channel.send(`https://github.com/labartist/juke-bot`);
