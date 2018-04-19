@@ -57,13 +57,14 @@ const commands = {
   'help': (message) => {
     let tosend = ['**__All Commands__**',
 	  '```JS',
-      config.prefix + 'join    "Joins current user voice channel"',
-      config.prefix + 'leave   "Leaves current user voice channel"',
-      config.prefix + 'play    "Plays music if already joined to voice channel"',
-      config.prefix + 'echo    "Echoes user input"',
-      config.prefix + 'ping    "Returns user latency to voice channel"',
-      config.prefix + 'git     "Links git repository"',
-      config.prefix + 'prefix  "Changes command prefix"',
+      config.prefix + 'join      "Joins current user voice channel"',
+      config.prefix + 'leave     "Leaves current user voice channel"',
+      config.prefix + 'play      "Plays music url and joins voice channel if haven\'t"',
+      config.prefix + 'playlocal "Plays local file and joins voice channel if haven\'t"',
+      config.prefix + 'echo      "Echoes user input"',
+      config.prefix + 'ping      "Returns user latency to voice channel"',
+      config.prefix + 'git       "Links git repository"',
+      config.prefix + 'prefix    "Changes command prefix"',
     '```'];
 		message.channel.send(tosend.join('\n'));
 	},

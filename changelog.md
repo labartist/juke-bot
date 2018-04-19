@@ -3,7 +3,7 @@
 
 ### 4/18/2018
 - Added local play functionality, bot can now stream audio file given its path.
-- Updated config file to now require a local path variable.
+- Updated config file and help command as to now require a local path variable.
 - Added templates to implement pause, unpause and stop for music.
 
 ### 4/7/2018
