@@ -1,6 +1,15 @@
 # Changelog
 ## List of changes made for juke-bot
 
+### 4/18/2018
+- Added local play functionality, bot can now stream audio file given its path.
+- Updated config file to now require a local path variable.
+- Added templates to implement pause, unpause and stop for music.
+
+### 4/7/2018
+- Added play functionality, bot can now stream audio from given youtube url.
+- Changed join and leave commands to now send messages to channel instead of replying within channel.
+
 ### 4/6/2018
 - Added ping functionality for calculating user latency.
 - Added mention functionality, now mentioning @juke-bot causes it to reply with current prefix and usage information.
