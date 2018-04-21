@@ -12,10 +12,9 @@ const streamOptions = { seek: 0, volume: 1 };
 let audioqueue = [];
 
 // Blizzard Access fields
-// const bzaccess = blizzard.data.credentials({id: process.env.config.blizzapi, secret: process.env.config.blizzsec, origin: 'us' })
-// .then(response => {
-//   console.log(response.data);
-// });
+var BnetStrategy = require('passport-bnet').Strategy;
+var BNET_ID = process.env.BNET_ID
+var BNET_SECRET = process.env.BNET_SECRET
 
 const commands = {
   // MUSIC STUFF
@@ -32,7 +31,7 @@ const commands = {
         const stream = yt(url, { filter : 'audioonly' });
         const dispatcher = connection.playStream(stream, streamOptions);
       }).catch(console.error);
-      message.channel.send(`Playing: **${info.title}** Requested by ***${message.author.username}***`);
+      message.channel.send(`Playing: **${info.title}** - Requested by ***${message.author.username}***`);
     });
     // while (queue.length != 0) {
     //   var next = queue.shift();

@@ -4,6 +4,7 @@
 ### 4/21/2018
 - You can now see who queued to play music.
 - Added blizzard api functionality.
+- Implemented blizzard api oauth service.
 - Added World of Warcraft realm info console logging.
 
 ### 4/18/2018
