@@ -2,16 +2,27 @@ const Discord = require("discord.js");
 const config = require("./config.json");
 const client = new Discord.Client();
 
+// Extensions
 var opus = require('opusscript');
 var yt = require('ytdl-core');
 var fs = require('fs');
+const blizzard = require('blizzard.js').initialize({ apikey: config.blizzapi });
 
 const streamOptions = { seek: 0, volume: 1 };
+let audioqueue = [];
 
-let queue = {};
+// Blizzard Access fields
+// const bzaccess = blizzard.data.credentials({id: process.env.config.blizzapi, secret: process.env.config.blizzsec, origin: 'us' })
+// .then(response => {
+//   console.log(response.data);
+// });
 
 const commands = {
+  // MUSIC STUFF
   'play': (message) => {
+    if (!message.member.voiceChannel) {
+      return message.channel.send('You need to be in a voice channel!');
+    }
     let url = message.content.split(' ')[1];
     yt.getInfo(url, function(err, info) {
       if (err) {
@@ -21,7 +32,7 @@ const commands = {
         const stream = yt(url, { filter : 'audioonly' });
         const dispatcher = connection.playStream(stream, streamOptions);
       }).catch(console.error);
-      message.channel.send(`Playing: **${info.title}**`);
+      message.channel.send(`Playing: **${info.title}** Requested by ***${message.author.username}***`);
     });
     // while (queue.length != 0) {
     //   var next = queue.shift();
@@ -29,21 +40,34 @@ const commands = {
     // }
   },
   'playlocal': (message) => {
+    if (!message.member.voiceChannel) {
+      return message.channel.send('You need to be in a voice channel!');
+    }
     //let name = message.content.split(' ')[1];
 		message.member.voiceChannel.join().then(connection => {
       //const dispatcher = connection.play(config.Mpath); // doesnt work
-      connection.playFile(config.Mpath);
+      const dispatcher = connection.playFile(config.Mpath);
     }).catch(console.error);
     message.channel.send("Playing File: **" + config.Mpath.replace(/^.*[\\\/]/, '') + "**");
   },
   // 'stop': (message) => {
   // },
   // 'pause': (message) => {
+  //   if (client.voiceConnection.playing) {
+  //     client.voiceConnection.dispatcher.pause();
+  //     return message.channel.send("Music player paused");
+  //   }
   // },
   // 'unpause': (message) => {
+  //   if (client.voiceConnection.paused) {
+  //     client.voiceConnection.dispatcher.resume();
+  //     return message.channel.send("Music player unpaused");
+  //   }
   // },
   // 'add': (message) => {
-	// },
+  // },
+  
+  // CHANNEL STUFF
   'join': (message) => {
 		return new Promise((resolve, reject) => {
       const voiceChannel = message.member.voiceChannel;
@@ -61,6 +85,9 @@ const commands = {
       config.prefix + 'leave     "Leaves current user voice channel"',
       config.prefix + 'play      "Plays music url and joins voice channel if haven\'t"',
       config.prefix + 'playlocal "Plays local file and joins voice channel if haven\'t"',
+      config.prefix + 'pause     "Pauses audio stream"',
+      config.prefix + 'unpause   "Resumes audio stream"',
+      config.prefix + 'realminfo "Logs World of Warcraft realm data in console"',
       config.prefix + 'echo      "Echoes user input"',
       config.prefix + 'ping      "Returns user latency to voice channel"',
       config.prefix + 'git       "Links git repository"',
@@ -72,6 +99,38 @@ const commands = {
     message.member.voiceChannel.leave();
     message.channel.send('Left Channel: ' + '**' + message.member.voiceChannel +'**');
   },
+
+  // BLIZZ STUFF
+  'validate': (message) => {
+    // blizzard.data.validate({ origin: 'us', token: config.blizzapi })
+    // .then(response => {
+    //   console.log(response.data);
+    // });
+    blizzard.data.mythicLeaderboard({ access_token: config.blizzapi, namespace: 'dynamic-us', origin: 'us' })
+    .then(response => {
+      console.log(response.data);
+    });
+  },
+  'wowrealminfo': (message) => {
+    let region = message.content.split(' ')[1];
+    if (region != "us" && region != "eu") {
+      return message.channel.send('Please enter a region: `us` for *USA/Oceanic*, `eu` for *Europe*.');
+    }
+    blizzard.wow.realms({ origin: `${region}` })
+    .then(response => {
+      console.log(response.data);
+      return message.channel.send(`Successfully logged data from **${region}** realms.`);
+    });
+  },
+  'wowtoken': (message) => {
+    //let region = message.content.split(' ')[1];
+    blizzard.data.token({ access_token: config.blizzapi, namespace: 'dynamic-us', origin: 'us' })
+    .then(response => {
+      console.log(response.data);
+    });
+  },
+
+  // MISC STUFF
   'echo': (message) => {
     message.reply(message.content.slice(config.prefix.length + 4).trim());
   },

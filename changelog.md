@@ -1,6 +1,11 @@
 # Changelog
 ## List of changes made for juke-bot
 
+### 4/21/2018
+- You can now see who queued to play music.
+- Added blizzard api functionality.
+- Added World of Warcraft realm info console logging.
+
 ### 4/18/2018
 - Added local play functionality, bot can now stream audio file given its path.
 - Updated config file and help command as to now require a local path variable.
