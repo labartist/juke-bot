@@ -2,7 +2,7 @@
 ## Personal Discord Music Bot (and other functionalities)
 
 ### Usage
-Requires: config file (json) schema:
+Requires: config file (json) schema (more data can be added - such as youtube/blizzard api):
 ```JavaScript
 {
   "token",
@@ -10,7 +10,6 @@ Requires: config file (json) schema:
   "clientID",
   "username"
   "APIKey"
-  "Mpath"
 }
 ```
 
@@ -32,8 +31,11 @@ Commands:
 ```JS
 join      "Joins current user voice channel"
 leave     "Leaves current user voice channel"
-play      "Plays music url and joins voice channel if haven't"
+play      "Plays music if already joined to voice channel"
 playlocal "Plays local file and joins voice channel if haven't"
+pause     "Pauses audio stream"
+unpause   "Resumes audio stream"
+realminfo "Logs Blizzard WoW realm data in console"
 echo      "Echoes user input"
 ping      "Returns user latency to voice channel"
 git       "Links git repository"

@@ -1,8 +1,13 @@
 # Changelog
 ## List of changes made for juke-bot
 
+### 6/10/2018
+- Added more tests for blizzard api functionality
+- gitignore is added for convenience (now contains config.json file since informationw within needs to be private).
+- README long due update!
+
 ### 4/21/2018
-- You can now see who queued to play music.
+- Enabled functionality to see name of user who queued audio stream.
 - Added blizzard api functionality.
 - Implemented blizzard api oauth service.
 - Added World of Warcraft realm info console logging.

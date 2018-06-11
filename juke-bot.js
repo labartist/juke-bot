@@ -86,7 +86,7 @@ const commands = {
       config.prefix + 'playlocal "Plays local file and joins voice channel if haven\'t"',
       config.prefix + 'pause     "Pauses audio stream"',
       config.prefix + 'unpause   "Resumes audio stream"',
-      config.prefix + 'realminfo "Logs World of Warcraft realm data in console"',
+      config.prefix + 'realminfo "Logs Blizzard WoW realm data in console"',
       config.prefix + 'echo      "Echoes user input"',
       config.prefix + 'ping      "Returns user latency to voice channel"',
       config.prefix + 'git       "Links git repository"',
@@ -105,9 +105,24 @@ const commands = {
     // .then(response => {
     //   console.log(response.data);
     // });
-    blizzard.data.mythicLeaderboard({ access_token: config.blizzapi, namespace: 'dynamic-us', origin: 'us' })
+    // blizzard.data.mythicLeaderboard({ access_token: config.blizzapi, namespace: 'dynamic-us', origin: 'us' })
+    // .then(response => {
+    //   console.log(response.data);
+    // });
+    blizzard.data.credentials({id: BNET_ID, secret: BNET_SECRET, origin: 'us' })
     .then(response => {
       console.log(response.data);
+    });
+  },
+  'profile': (message) => {
+    let msg = message.content.toLowerCase().split(' ')[1];
+    let ori = msg.split('.')[0];
+    let rea = msg.split('.')[1];
+    let nam = msg.split('.')[2];
+    blizzard.wow.character(['profile'], { origin: `${ori}`, realm: `${rea}`, name: `${nam}` })
+    .then(response => {
+      console.log(response.data);
+      return message.channel.send(`Logged data for **${nam}@${rea}(${ori.toUpperCase()})**`);
     });
   },
   'wowrealminfo': (message) => {
@@ -121,13 +136,13 @@ const commands = {
       return message.channel.send(`Successfully logged data from **${region}** realms.`);
     });
   },
-  'wowtoken': (message) => {
+  /*'wowtoken': (message) => {
     //let region = message.content.split(' ')[1];
     blizzard.data.token({ access_token: config.blizzapi, namespace: 'dynamic-us', origin: 'us' })
     .then(response => {
       console.log(response.data);
     });
-  },
+  },*/
 
   // MISC STUFF
   'echo': (message) => {
@@ -146,6 +161,10 @@ const commands = {
     config.prefix = newPrefix;
     message.channel.send('Prefix changed to ' + '`' + newPrefix + '`');
     fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
+  },
+  'kill': (message) => {
+    message.channel.send(`Process killed, disconnecting...`);
+    return process.exit();
   }
 }
 
