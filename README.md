@@ -3,8 +3,10 @@
 
 ### Usage
 Requires:
-- config file (json) schema (more data can be added - such as youtube/blizzard api):
+- Config file (json) schema (more data can be added - such as youtube/blizzard api):
 - To install packages simply `npm install` with package-lock.json)
+- To add discord bot simply follow the instructions indicated in the discord website: 
+- Example of the config file is shown below:
 ```JavaScript
 {
   "token",
