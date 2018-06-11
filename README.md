@@ -2,7 +2,9 @@
 ## Personal Discord Music Bot (and other functionalities)
 
 ### Usage
-Requires: config file (json) schema (more data can be added - such as youtube/blizzard api):
+Requires:
+- config file (json) schema (more data can be added - such as youtube/blizzard api):
+- To install packages simply `npm install` with package-lock.json)
 ```JavaScript
 {
   "token",

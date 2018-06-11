@@ -5,6 +5,8 @@
 - Added more tests for blizzard api functionality
 - gitignore is added for convenience (now contains config.json file since informationw within needs to be private).
 - README long due update!
+- Added config file and node_modules to gitignore
+- Removed node_modules directory (to install packages simply `npm install` with package-lock.json)
 
 ### 4/21/2018
 - Enabled functionality to see name of user who queued audio stream.
