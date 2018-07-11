@@ -1,6 +1,9 @@
 # Changelog
 ## List of changes made for juke-bot
 
+### 7/11/2018
+- New package update
+
 ### 6/10/2018
 - Added more tests for blizzard api functionality
 - gitignore is added for convenience (now contains config.json file since informationw within needs to be private).
